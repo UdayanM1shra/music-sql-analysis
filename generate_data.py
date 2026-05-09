@@ -7,33 +7,33 @@ from datetime import date, datetime, timedelta
 
 random.seed(42)
 
-# ---- Artists with rough popularity weights ----
+#Artists with rough popularity weights
 ARTISTS = [
-    ("Taylor Swift",      "Pop",       100),
-    ("Drake",             "Hip-Hop",   95),
-    ("The Weeknd",        "Pop",       85),
-    ("Bad Bunny",         "Reggaeton", 90),
-    ("Billie Eilish",     "Pop",       70),
-    ("Kendrick Lamar",    "Hip-Hop",   75),
-    ("Olivia Rodrigo",    "Pop",       65),
-    ("Travis Scott",      "Hip-Hop",   72),
-    ("Harry Styles",      "Pop",       68),
-    ("SZA",               "R&B",       60),
-    ("Dua Lipa",          "Pop",       55),
-    ("Post Malone",       "Hip-Hop",   58),
-    ("Doja Cat",          "Pop",       62),
-    ("Frank Ocean",       "R&B",       40),
-    ("Tame Impala",       "Indie",     35),
-    ("Arctic Monkeys",    "Indie",     45),
-    ("Mac Miller",        "Hip-Hop",   38),
-    ("Lana Del Rey",      "Indie",     42),
-    ("J Cole",            "Hip-Hop",   50),
-    ("Mitski",            "Indie",     25),
-    ("Phoebe Bridgers",   "Indie",     22),
-    ("Steve Lacy",        "R&B",       30),
-    ("Tyler, The Creator","Hip-Hop",   55),
-    ("Lorde",             "Pop",       33),
-    ("Bon Iver",          "Indie",     20),
+    ("Taylor Swift","Pop",100),
+    ("Drake","Hip-Hop",95),
+    ("The Weeknd","Pop",85),
+    ("Bad Bunny","Reggaeton",90),
+    ("Billie Eilish","Pop",70),
+    ("Kendrick Lamar","Hip-Hop",75),
+    ("Olivia Rodrigo","Pop",65),
+    ("Travis Scott","Hip-Hop",72),
+    ("Harry Styles","Pop",68),
+    ("SZA","R&B",60),
+    ("Dua Lipa","Pop",55),
+    ("Post Malone","Hip-Hop",58),
+    ("Doja Cat","Pop",62),
+    ("Frank Ocean","R&B",40),
+    ("Tame Impala","Indie",35),
+    ("Arctic Monkeys","Indie",45),
+    ("Mac Miller","Hip-Hop",38),
+    ("Lana Del Rey","Indie",42),
+    ("J Cole","Hip-Hop",50),
+    ("Mitski","Indie",25),
+    ("Phoebe Bridgers","Indie",22),
+    ("Steve Lacy","R&B",30),
+    ("Tyler, The Creator","Hip-Hop",55),
+    ("Lorde","Pop",33),
+    ("Bon Iver","Indie",20),
 ]
 
 # ---- Build artists table ----
@@ -47,7 +47,7 @@ for i, (name, genre, weight) in enumerate(ARTISTS, start=1):
         "monthly_listeners_millions": round(weight * random.uniform(0.4, 0.7), 1),
     })
 
-# ---- Songs (each artist has 4-12 songs) ----
+#Songs (each artist has 4-12 songs)
 song_themes = [
     "Midnight", "Summer", "Lonely", "Forever", "Lost", "Dreaming", "Heartbreak",
     "Sunshine", "Falling", "Crazy", "Together", "Goodbye", "Paradise", "Drive",
@@ -67,12 +67,11 @@ for artist in artists:
             "artist_id": artist["artist_id"],
             "song_title": theme,
             "duration_seconds": random.randint(140, 320),
-            "release_date": (date(2020, 1, 1) +
-                             timedelta(days=random.randint(0, 1700))).isoformat(),
+            "release_date": (date(2020, 1, 1) + timedelta(days=random.randint(0, 1700))).isoformat(),
         })
         song_id += 1
 
-# ---- Users ----
+#Users
 COUNTRIES = [
     ("United States", 30), ("United Kingdom", 12), ("Australia", 8),
     ("Canada", 7), ("Germany", 8), ("Brazil", 9), ("Mexico", 6),
@@ -91,8 +90,7 @@ for uid in range(1, 1501):  # 1500 users
         "user_id": uid,
         "country": weighted_choice(COUNTRIES),
         "plan_type": weighted_choice(PLANS),
-        "signup_date": (date(2022, 1, 1) +
-                        timedelta(days=random.randint(0, 1000))).isoformat(),
+        "signup_date": (date(2022, 1, 1) + timedelta(days=random.randint(0, 1000))).isoformat(),
         "age": random.choices(
             [random.randint(13, 17), random.randint(18, 24),
              random.randint(25, 34), random.randint(35, 49),
@@ -101,9 +99,9 @@ for uid in range(1, 1501):  # 1500 users
         )[0],
     })
 
-# ---- Plays (the big fact table) ----
-# Some users are heavy listeners, some are light.
-# Listeners have favourite genres they play more.
+#Plays (the big fact table)
+#Some users are heavy listeners, some are light.
+#Listeners have favourite genres they play more.
 artist_weights = [a["monthly_listeners_millions"] for a in artists]
 
 plays = []
@@ -112,14 +110,14 @@ play_start = datetime(2024, 1, 1, 0, 0)
 play_end = datetime(2025, 6, 30, 23, 59)
 total_seconds = int((play_end - play_start).total_seconds())
 
-# Each user has a "listening intensity"
+#Each user has a "listening intensity"
 user_intensity = {u["user_id"]: random.choices(
     [random.randint(5, 30), random.randint(30, 100),
      random.randint(100, 400), random.randint(400, 1200)],
     weights=[20, 40, 30, 10]
 )[0] for u in users}
 
-# Each user has a slight genre preference
+#Each user has a slight genre preference
 user_genre_pref = {u["user_id"]: random.choice(
     ["Pop", "Hip-Hop", "Indie", "R&B", "Reggaeton", None]
 ) for u in users}
@@ -137,7 +135,7 @@ for user in users:
     pref = user_genre_pref[uid]
 
     for _ in range(n_plays):
-        # bias 60% of plays toward preferred genre if they have one
+        #bias 60% of plays toward preferred genre if they have one
         if pref and random.random() < 0.6:
             artist_id = random.choice(genre_to_artists[pref])
         else:
@@ -177,14 +175,14 @@ for user in users:
         })
         play_id += 1
 
-# ---- Write CSVs ----
+#Write CSVs
 def write_csv(rows, fname):
     with open(fname, "w", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=rows[0].keys())
         writer.writeheader()
         writer.writerows(rows)
 
-OUT = "/home/claude/music-sql-analysis/data"
+OUT = "data"
 write_csv(artists, f"{OUT}/artists.csv")
 write_csv(songs, f"{OUT}/songs.csv")
 write_csv(users, f"{OUT}/users.csv")

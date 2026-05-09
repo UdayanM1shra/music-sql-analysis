@@ -11,12 +11,12 @@ WITH monthly_plays AS (
 SELECT
     month,
     plays,
-    LAG(plays) OVER (ORDER BY month)                                AS prev_month_plays,
-    plays - LAG(plays) OVER (ORDER BY month)                        AS change_vs_prev,
+    LAG(plays) OVER (ORDER BY month) AS prev_month_plays,
+    plays - LAG(plays) OVER (ORDER BY month) AS change_vs_prev,
     ROUND(
         100.0 * (plays - LAG(plays) OVER (ORDER BY month))
               / LAG(plays) OVER (ORDER BY month),
         2
-    )                                                               AS pct_change
+    ) AS pct_change
 FROM monthly_plays
 ORDER BY month;

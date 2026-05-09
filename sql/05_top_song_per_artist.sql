@@ -13,7 +13,7 @@ WITH song_play_counts AS (
             ORDER BY COUNT(*) DESC
         ) AS rank_within_artist
     FROM plays p
-    JOIN songs s   ON p.song_id = s.song_id
+    JOIN songs s ON p.song_id = s.song_id
     JOIN artists a ON s.artist_id = a.artist_id
     GROUP BY a.artist_id, a.artist_name, s.song_id, s.song_title
 )

@@ -1,8 +1,8 @@
 # sets up the sqlite db, loads csvs, runs queries
 # usage:
-#   python3 run_analysis.py           # run all queries
-#   python3 run_analysis.py --query 3 # run just query 3
-#   python3 run_analysis.py --setup   # rebuild db only
+#python3 run_analysis.py           # run all queries
+#python3 run_analysis.py --query 3 # run just query 3
+#python3 run_analysis.py --setup   # rebuild db only
 
 import sqlite3
 import csv
